@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container" style="text-align:center;">
+    <h2>Reservation Cancelled</h2>
+    <p>Your reservation for <strong>{{ session.gym_class.name }}</strong> on <strong>{{ session.start_time|date:'D, M d, Y H:i' }}</strong> has been cancelled.</p>
+    <a href="/bookings/calendar/" class="cta-btn">Back to Calendar</a>
+</div>
+{% endblock %}

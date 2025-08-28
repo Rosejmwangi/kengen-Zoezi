@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <h2>Reserve a Spot for {{ session.gym_class.name }}</h2>
+    <p><strong>Date & Time:</strong> {{ session.start_time|date:'D, M d, Y H:i' }} - {{ session.end_time }}</p>
+    {% if is_full %}
+        <div style="color:red;font-weight:bold;margin:1em 0;">This session is fully booked and cannot be reserved.</div>
+    {% elif form %}
+        <form method="post">
+            {% csrf_token %}
+            <div style="margin-bottom:1em;">
+                {{ form.name.label_tag }}<br>
+                {{ form.name }}
+            </div>
+            <div style="margin-bottom:1em;">
+                {{ form.email.label_tag }}<br>
+                {{ form.email }}
+            </div>
+            <button type="submit" class="cta-btn">Reserve</button>
+        </form>
+    {% endif %}
+</div>
+{% endblock %}

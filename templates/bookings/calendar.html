@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <h2>Book a Gym Session</h2>
+    <div id='calendar'></div>
+</div>
+
+<!-- Modal -->
+<div id="sessionModal" class="modal" style="display:none;position:fixed;z-index:1000;left:0;top:0;width:100vw;height:100vh;background:rgba(0,0,0,0.5);align-items:center;justify-content:center;">
+    <div style="background:#fff;padding:2em 2em 1em 2em;border-radius:12px;max-width:500px;width:90%;position:relative;">
+        <span id="closeModal" style="position:absolute;top:10px;right:20px;font-size:1.5em;cursor:pointer;">&times;</span>
+        <h3>Sessions for <span id="modalDate"></span></h3>
+        <div id="modalSessions"></div>
+    </div>
+</div>
+
+<link href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css' rel='stylesheet' />
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js'></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('calendar');
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        height: 600,
+        selectable: true,
+        dateClick: function(info) {
+            fetch(`/bookings/sessions/by-date/?date=${info.dateStr}`)
+                .then(response => response.json())
+                .then(data => showSessionsModal(info.dateStr, data.sessions));
+        }
+    });
+    calendar.render();
+
+    function showSessionsModal(dateStr, sessions) {
+        document.getElementById('modalDate').textContent = dateStr;
+        var modalSessions = document.getElementById('modalSessions');
+        if (sessions.length === 0) {
+            modalSessions.innerHTML = '<p>No sessions available for this day.</p>';
+        } else {
+            modalSessions.innerHTML = sessions.map(s =>
+                `<div style='margin-bottom:1em;'>
+                    <strong>${s.gym_class}</strong> (${s.start_time} - ${s.end_time})<br>
+                    Instructor: ${s.instructor}<br>
+                    <strong>Capacity:</strong> ${s.capacity}<br>
+                    <strong>Spots left:</strong> ${s.spots_left}<br>
+                    ${s.is_full ? '<span style="color:red;font-weight:bold;">Fully Booked</span>' : `<a href="/bookings/sessions/${s.id}/reserve/" class="cta-btn">Reserve</a>`}
+                </div>`
+            ).join('');
+        }
+        document.getElementById('sessionModal').style.display = 'flex';
+    }
+    document.getElementById('closeModal').onclick = function() {
+        document.getElementById('sessionModal').style.display = 'none';
+    };
+    window.onclick = function(event) {
+        if (event.target == document.getElementById('sessionModal')) {
+            document.getElementById('sessionModal').style.display = 'none';
+        }
+    };
+});
+</script>
+{% endblock %}

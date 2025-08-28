@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container" style="text-align:center;">
+    <h2>Cancel Reservation</h2>
+    <p>Are you sure you want to cancel your reservation for <strong>{{ reservation.session.gym_class.name }}</strong> on <strong>{{ reservation.session.start_time|date:'D, M d, Y H:i' }}</strong>?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="cta-btn" style="background:#d32f2f;">Yes, Cancel Reservation</button>
+        <a href="/bookings/calendar/" class="cta-btn" style="background:#888;">No, Go Back</a>
+    </form>
+</div>
+{% endblock %}

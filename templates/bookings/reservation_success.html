@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container" style="text-align:center;">
+    <h2>Reservation Successful!</h2>
+    <p>Your spot for <strong>{{ session.gym_class.name }}</strong> on <strong>{{ session.start_time|date:'D, M d, Y H:i' }}</strong> has been reserved.</p>
+    <a href="/bookings/sessions/" class="cta-btn">Back to Sessions</a>
+    {% if reservation %}
+        <a href="{% url 'reservation_ics' reservation.id %}" class="cta-btn" style="background:#1976d2;margin-right:10px;">Add to Outlook</a>
+        <form action="{% url 'cancel_reservation' reservation.id %}" method="get" style="display:inline;">
+            <button type="submit" class="cta-btn" style="background:#d32f2f;margin-left:10px;">Cancel Reservation</button>
+        </form>
+    {% endif %}
+</div>
+{% endblock %}

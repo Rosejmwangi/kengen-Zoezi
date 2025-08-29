@@ -6,7 +6,7 @@
         <thead>
             <tr style="background:#1e3c72;color:#fff;">
                 <th style="padding:10px;">Class</th>
-                <th style="padding:10px;">Instructor</th>
+                <!-- <th style="padding:10px;">Instructor</th> -->
                 <th style="padding:10px;">Start Time</th>
                 <th style="padding:10px;">End Time</th>
                 <th style="padding:10px;">Capacity</th>
@@ -17,7 +17,7 @@
         {% for session in sessions %}
             <tr style="background:#f8f8f8;">
                 <td style="padding:10px;">{{ session.gym_class.name }}</td>
-                <td style="padding:10px;">{{ session.gym_class.instructor }}</td>
+                <!-- <td style="padding:10px;">{{ session.gym_class.instructor }}</td> -->
                 <td style="padding:10px;">{{ session.start_time|date:'D, M d, Y H:i' }}</td>
                 <td style="padding:10px;">{{ session.end_time }}</td>
                 <td style="padding:10px;">{{ session.capacity }}</td>

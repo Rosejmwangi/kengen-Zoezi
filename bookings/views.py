@@ -7,8 +7,8 @@ def reservation_ics(request, reservation_id):
 	session = reservation.session
 	start = session.start_time.strftime('%Y%m%dT%H%M%S')
 	end = session.end_time.strftime('%Y%m%dT%H%M%S')
-	summary = f"{session.gym_class.name} with {session.gym_class.instructor}"
-	description = f"KenGen Zoezi Gym Session\nClass: {session.gym_class.name}\nInstructor: {session.gym_class.instructor}"
+	summary = f"{session.gym_class.name}"
+	description = f"KenGen Zoezi Gym Session\nClass: {session.gym_class.name}"
 	location = "KenGen Staff Gym"
 	ics_content = f"""
 BEGIN:VCALENDAR
@@ -41,6 +41,7 @@ def sessions_by_date(request):
 	import pytz
 	nairobi_tz = pytz.timezone('Africa/Nairobi')
 	sessions = []
+	print(f"sessions_by_date called with date_str={date_str}")
 	if date_str:
 		try:
 			date_obj = datetime.strptime(date_str, '%Y-%m-%d').date()
@@ -55,15 +56,15 @@ def sessions_by_date(request):
 					sessions.append({
 						'id': session.id,
 						'gym_class': session.gym_class.name,
-						'instructor': session.gym_class.instructor,
 						'start_time': local_start.strftime('%H:%M'),
 						'end_time': session.end_time.strftime('%H:%M'),
 						'capacity': session.capacity,
 						'is_full': is_full,
 						'spots_left': spots_left,
 					})
-		except Exception:
-			pass
+			print(f"sessions found: {sessions}")
+		except Exception as e:
+			print(f"Error in sessions_by_date: {e}")
 	return JsonResponse({'sessions': sessions})
 
 from django.shortcuts import render
@@ -112,7 +113,6 @@ def reserve_session(request, session_id):
 				f"Dear {reservation.name},\n\n"
 				f"Your reservation for {session.gym_class.name} is confirmed.\n"
 				f"Date & Time: {start_time_str} - {session.end_time.strftime('%H:%M')}\n"
-				f"Instructor: {session.gym_class.instructor}\n\n"
 				f"Thank you for booking with KenGen Staff Gym Booker!\n"
 			)
 			send_mail(

@@ -5,12 +5,9 @@ from datetime import datetime, time, timedelta
 import pytz
 
 CLASS_SCHEDULE = [
-    {"name": "Spinning", "start": time(5, 30), "end": time(7, 30), "instructor": "Coach Spin"},
-    {"name": "Yoga", "start": time(8, 0), "end": time(10, 0), "instructor": "Coach Yoga"},
-    {"name": "Zumba", "start": time(10, 0), "end": time(12, 0), "instructor": "Coach Zumba"},
-    {"name": "Cardio", "start": time(12, 0), "end": time(14, 0), "instructor": "Coach Cardio"},
-    {"name": "Lifting", "start": time(14, 0), "end": time(16, 0), "instructor": "Coach Lift"},
-    {"name": "Dance", "start": time(16, 30), "end": time(20, 0), "instructor": "Coach Dance"},
+    {"name": "Morning Session", "start": time(5, 30), "end": time(7, 45)},
+    {"name": "Lunch Session", "start": time(12, 0), "end": time(13, 45)},
+    {"name": "Evening Session", "start": time(17, 0), "end": time(20, 0)},
 ]
 
 class Command(BaseCommand):
@@ -34,7 +31,7 @@ class Command(BaseCommand):
             for class_info in CLASS_SCHEDULE:
                 gym_class, _ = GymClass.objects.get_or_create(
                     name=class_info["name"],
-                    defaults={"description": f"{class_info['name']} class", "instructor": class_info["instructor"]}
+                    defaults={"description": f"{class_info['name']} class"}
                 )
                 start_dt = datetime.combine(session_date, class_info["start"])
                 start_dt = nairobi_tz.localize(start_dt)

@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function() {
             modalSessions.innerHTML = sessions.map(s =>
                 `<div style='margin-bottom:1em;'>
                     <strong>${s.gym_class}</strong> (${s.start_time} - ${s.end_time})<br>
-                    Instructor: ${s.instructor}<br>
+                    <!-- Instructor: ${s.instructor}<br> -->
                     <strong>Capacity:</strong> ${s.capacity}<br>
                     <strong>Spots left:</strong> ${s.spots_left}<br>
                     ${s.is_full ? '<span style="color:red;font-weight:bold;">Fully Booked</span>' : `<a href="/bookings/sessions/${s.id}/reserve/" class="cta-btn">Reserve</a>`}

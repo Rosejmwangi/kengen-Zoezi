@@ -98,6 +98,18 @@
     <body>
         <div class="container">
         <h1>KenGen Zoezi</h1>
+        {% if user.is_authenticated %}
+            <div style="position:absolute; right:20px; top:20px;">
+                <form action="{% url 'logout' %}" method="post" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" style="color:#fff; background:#2d3a4a; padding:8px 12px; border-radius:8px; border:none; cursor:pointer;">Logout</button>
+                </form>
+            </div>
+        {% else %}
+            <div style="position:absolute; right:20px; top:20px;">
+                <a href="{% url 'login' %}" style="color:#fff; background:#2d3a4a; padding:8px 12px; border-radius:8px; text-decoration:none;">Login</a>
+            </div>
+        {% endif %}
             <div class="kengen-values">
                 <div class="value">health</div>
                 <div class="value">Energy</div>
@@ -130,31 +142,21 @@
         </section>
 
         <script>
-            const toggleBtn = document.getElementById('toggle-terms-btn');
-            const termsContent = document.getElementById('terms-content');
-            toggleBtn.addEventListener('click', function() {
-                if (termsContent.style.display === 'none') {
-                    termsContent.style.display = 'block';
-                    toggleBtn.textContent = 'Hide Terms and Conditions';
-                } else {
-                    termsContent.style.display = 'none';
-                    toggleBtn.textContent = 'Show Terms and Conditions';
+            (function(){
+                const toggleBtn = document.getElementById('toggle-terms-btn');
+                const termsContent = document.getElementById('terms-content');
+                if(toggleBtn && termsContent){
+                    toggleBtn.addEventListener('click', function() {
+                        if (termsContent.style.display === 'none') {
+                            termsContent.style.display = 'block';
+                            toggleBtn.textContent = 'Hide Terms and Conditions';
+                        } else {
+                            termsContent.style.display = 'none';
+                            toggleBtn.textContent = 'Show Terms and Conditions';
+                        }
+                    });
                 }
-            });
+            })();
         </script>
     </body>
     </html>
-
-    <script>
-        const toggleBtn = document.getElementById('toggle-terms-btn');
-        const termsContent = document.getElementById('terms-content');
-        toggleBtn.addEventListener('click', function() {
-            if (termsContent.style.display === 'none') {
-                termsContent.style.display = 'block';
-                toggleBtn.textContent = 'Hide Terms and Conditions';
-            } else {
-                termsContent.style.display = 'none';
-                toggleBtn.textContent = 'Show Terms and Conditions';
-            }
-        });
-    </script>

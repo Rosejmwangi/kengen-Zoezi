@@ -39,6 +39,7 @@ def sessions_by_date(request):
 	date_str = request.GET.get('date')
 	from datetime import datetime
 	import pytz
+	from django.utils import timezone
 	nairobi_tz = pytz.timezone('Africa/Nairobi')
 	sessions = []
 	print(f"sessions_by_date called with date_str={date_str}")
@@ -56,6 +57,8 @@ def sessions_by_date(request):
 					sessions.append({
 						'id': session.id,
 						'gym_class': session.gym_class.name,
+						'start_iso': session.start_time.isoformat(),
+						'is_past': session.start_time <= timezone.now(),
 						'start_time': local_start.strftime('%H:%M'),
 						'end_time': session.end_time.strftime('%H:%M'),
 						'capacity': session.capacity,
@@ -68,10 +71,34 @@ def sessions_by_date(request):
 	return JsonResponse({'sessions': sessions})
 
 from django.shortcuts import render
+from django.contrib.auth import login
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.decorators import login_required
 
 
+@login_required
 def homepage(request):
+	# main application interface - only accessible when logged in
 	return render(request, 'bookings/homepage.html')
+
+
+def signup(request):
+	# simple signup that creates a user and logs them in
+	if request.method == 'POST':
+		form = UserCreationForm(request.POST)
+		if form.is_valid():
+			user = form.save()
+			# log the user in
+			login(request, user)
+			return redirect('/')
+	else:
+		form = UserCreationForm()
+	return render(request, 'bookings/signup.html', {'form': form})
+
+
+def members_home(request):
+	"""Public landing page for members offering Login and Signup links."""
+	return render(request, 'bookings/members_home.html')
 
 # List all available sessions
 from reservations.models import Session, Reservation
@@ -123,8 +150,14 @@ def reserve_session(request, session_id):
 				fail_silently=True
 			)
 			return render(request, 'bookings/reservation_success.html', {'session': session, 'reservation': reservation})
+		else:
+			# form invalid
+			print('ReservationForm invalid:', form.errors)
+			# fall through to re-render form with errors
 	else:
+		# GET: create empty form
 		form = ReservationForm()
+	# render the reservation form (either empty GET or invalid POST)
 	return render(request, 'bookings/reserve_session.html', {'form': form, 'session': session, 'is_full': False})
 
 from django.utils import timezone

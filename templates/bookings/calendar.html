@@ -1,13 +1,70 @@
 {% extends 'base.html' %}
 {% block content %}
+<style>
+    body {
+        background: linear-gradient(135deg, #f37021 0%, #662d91 100%);
+        min-height: 100vh;
+    }
+    .container {
+        max-width: 1000px;
+        margin: 48px auto;
+        background: rgba(255,255,255,0.95);
+        border-radius: 20px;
+        padding: 28px;
+        box-shadow: 0 8px 32px rgba(102,45,145,0.12);
+    }
+    #calendar {
+        background: #f3f4f6; /* light grey */
+        border-radius: 12px;
+        padding: 8px;
+    }
+    /* make individual day frames transparent so the grey shows through */
+    .fc .fc-daygrid-day-frame {
+        background: transparent !important;
+    }
+    /* make day numbers and header orange to match branding */
+    .fc .fc-daygrid-day-number {
+        color: #f37021 !important;
+        font-weight: 600;
+    }
+    .fc .fc-toolbar-title {
+        color: #f37021 !important;
+        font-weight: 700;
+    }
+    .fc .fc-toolbar .fc-button,
+    .fc .fc-toolbar button {
+        color: #f37021 !important;
+        border-color: rgba(243,112,33,0.15) !important;
+    }
+    /* weekday header (Mon, Tue ...) color */
+    .fc .fc-col-header-cell .fc-col-header-cell-cushion,
+    .fc .fc-col-header-cell {
+        color: #f37021 !important;
+        font-weight: 600;
+    }
+    /* weekday header background to light grey instead of default blue */
+    .fc .fc-col-header-cell {
+        background: #f3f4f6 !important;
+    }
+    .fc .fc-col-header-cell .fc-col-header-cell-cushion {
+        background: transparent !important;
+    }
+    /* make modal card match site */
+    #sessionModal > div {
+        box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+    }
+    @media (max-width:700px){
+        .container{margin:20px;padding:16px}
+    }
+</style>
 <div class="container">
-    <h2>Book a Gym Session</h2>
+    <h2 style=" color: orangered;"><i><b>JUST GYM IT!!</b></i></h2>
     <div id='calendar'></div>
 </div>
 
 <!-- Modal -->
 <div id="sessionModal" class="modal" style="display:none;position:fixed;z-index:1000;left:0;top:0;width:100vw;height:100vh;background:rgba(0,0,0,0.5);align-items:center;justify-content:center;">
-    <div style="background:#fff;padding:2em 2em 1em 2em;border-radius:12px;max-width:500px;width:90%;position:relative;">
+    <div style="background:#D3D3D3;padding:2em 2em 1em 2em;border-radius:12px;max-width:500px;width:90%;position:relative;">
         <span id="closeModal" style="position:absolute;top:10px;right:20px;font-size:1.5em;cursor:pointer;">&times;</span>
         <h3>Sessions for <span id="modalDate"></span></h3>
         <div id="modalSessions"></div>
@@ -40,10 +97,9 @@ document.addEventListener('DOMContentLoaded', function() {
             modalSessions.innerHTML = sessions.map(s =>
                 `<div style='margin-bottom:1em;'>
                     <strong>${s.gym_class}</strong> (${s.start_time} - ${s.end_time})<br>
-                    <!-- Instructor: ${s.instructor}<br> -->
                     <strong>Capacity:</strong> ${s.capacity}<br>
                     <strong>Spots left:</strong> ${s.spots_left}<br>
-                    ${s.is_full ? '<span style="color:red;font-weight:bold;">Fully Booked</span>' : `<a href="/bookings/sessions/${s.id}/reserve/" class="cta-btn">Reserve</a>`}
+                    ${s.is_full ? '<span style="color:red;font-weight:bold;">Fully Booked</span>' : (s.is_past ? '<span style="color:#666;">Past session</span>' : `<a href="/bookings/sessions/${s.id}/reserve/" class="cta-btn">Reserve</a>`)}
                 </div>`
             ).join('');
         }

@@ -8,15 +8,24 @@
     {% elif form %}
         <form method="post">
             {% csrf_token %}
+            {% if form.non_field_errors %}
+                <div style="color:red;margin-bottom:8px;">{{ form.non_field_errors }}</div>
+            {% endif %}
             <div style="margin-bottom:1em;">
                 {{ form.name.label_tag }}<br>
                 {{ form.name }}
+                {% if form.name.errors %}
+                    <div style="color:red;">{{ form.name.errors }}</div>
+                {% endif %}
             </div>
             <div style="margin-bottom:1em;">
                 {{ form.email.label_tag }}<br>
                 {{ form.email }}
+                {% if form.email.errors %}
+                    <div style="color:red;">{{ form.email.errors }}</div>
+                {% endif %}
             </div>
-            <button type="submit" class="cta-btn">Reserve</button>
+            <button style="background-color: orange;" type="submit" class="cta-btn">Reserve</button>
         </form>
     {% endif %}
 </div>

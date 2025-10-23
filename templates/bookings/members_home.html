@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+  .members-hero {
+    max-width: 960px;
+    margin: 56px auto;
+    /* purple -> orange gradient */
+    background: linear-gradient(135deg, #662d91 0%, #f37021 100%);
+    border-radius: 14px;
+    padding: 36px 28px;
+    display: block;
+    box-shadow: 0 10px 30px rgba(102,45,145,0.12);
+    text-align: center;
+    color: #fff;
+  }
+  .members-left h1 { color: #ffffff; margin: 0 0 8px 0; font-family: 'Montserrat', sans-serif; }
+  .members-left p { color: rgba(255,255,255,0.92); margin: 0 0 14px 0; font-size: 1rem; }
+  .cta-row { display:flex; gap:12px; }
+  .btn-primary { background: #ffffff; color:#f37021; border:none; padding:12px 18px; border-radius:10px; font-weight:700; text-decoration:none; box-shadow: 0 6px 18px rgba(243,112,33,0.18); }
+  .btn-primary:hover { transform: translateY(-2px); }
+  .btn-secondary { background: rgba(0,0,0,0.12); color:#fff; border:none; padding:12px 18px; border-radius:10px; font-weight:700; text-decoration:none; box-shadow: 0 6px 18px rgba(102,45,145,0.12); }
+  .info-card { background: rgba(255,255,255,0.06); border-radius:12px; padding:18px; box-shadow: 0 6px 18px rgba(0,0,0,0.04); color:#fff; }
+  .muted { color: rgba(255,255,255,0.9); font-size:0.95rem; }
+  @media (max-width:880px){
+    .members-hero{padding:18px}
+  }
+</style>
+
+<section class="members-hero">
+  <div class="members-left">
+    <h1>KENGEN FITFAM</h1>
+    <p class="muted">Chasing health goals</p>
+    <div class="cta-row" style="margin-top:14px;">
+      <a href="{% url 'signup' %}" class="btn-primary">Create an account</a>
+      <a href="{% url 'login' %}" class="btn-secondary">Login</a>
+    </div>
+
+    <div style="margin-top:18px;" class="muted">
+      <div><strong>Why join?</strong></div>
+      <ul style="text-align:left;margin:8px 0 0 18px;">
+        <li>More than a gym - it's a lifestyle</li>
+        <li>Show up and become unstoppable </li>
+        <li>Every drop of sweat - that's progress</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- quick actions removed per request -->
+  <div style="margin-top:20px;" class="muted">
+    <p style="margin:0 0 8px 0;"><strong>Getting started:</strong></p>
+    <ol style="text-align:left; max-width:640px; margin:8px auto 0 18px;">
+      <li>Click "Create an account" for new members </li>
+      <li>Log in for existing members</li>
+      <li>Open the calendar and pick a session</li>
+      <li>Confirm your reservation</li>
+    </ol>
+    <p style="margin-top:14px;">Need help? Contact <a href="mailto:help@kengen.co.ke">help@kengen.co.ke</a></p>
+  </div>
+</section>
+
+<div style="text-align:center;margin-top:12px;">
+  <a href="/" style="color:#666;text-decoration:underline;">Back to public homepage</a>
+</div>
+
+{% endblock %}

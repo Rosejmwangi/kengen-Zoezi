@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container" style="max-width:560px;margin:48px auto;padding:28px;background:#fff;border-radius:12px;text-align:center;">
+  <h1>Member Login</h1>
+  {% if form.errors %}
+    <div style="color:red;margin-bottom:12px;">Please correct the errors below.</div>
+  {% endif %}
+  <form method="post" novalidate>
+    {% csrf_token %}
+    <div style="margin-bottom:12px;text-align:left;">
+      <label for="id_username">Username</label><br>
+      <input id="id_username" name="username" required />
+    </div>
+    <div style="margin-bottom:12px;text-align:left;">
+      <label for="id_password">Password</label><br>
+      <input id="id_password" name="password" type="password" required minlength="8" />
+    </div>
+    <div style="margin-top:12px;">
+      <button class="cta-btn" type="submit">Login</button>
+    </div>
+  </form>
+  <p style="margin-top:14px;">Not a member? <a href="{% url 'signup' %}">Sign up</a></p>
+</div>
+{% endblock %}
